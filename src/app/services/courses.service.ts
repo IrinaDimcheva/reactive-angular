@@ -10,7 +10,7 @@ import { map, shareReplay } from 'rxjs/operators';
 export class CoursesService {
   constructor(private http: HttpClient) {}
 
-  getAllCourses(): Observable<Course[]> {
+  loadAllCourses(): Observable<Course[]> {
     return this.http.get<Course[]>('/api/courses').pipe(
       map((res) => res['payload']),
       shareReplay()
