@@ -1,12 +1,4 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  Inject,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation,
-} from '@angular/core';
+import { Component, ElementRef, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Course } from '../model/course';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
@@ -20,8 +12,9 @@ import { LoadingService } from '../loading/loading.service';
   selector: 'course-dialog',
   templateUrl: './course-dialog.component.html',
   styleUrls: ['./course-dialog.component.css'],
+  providers: [LoadingService],
 })
-export class CourseDialogComponent implements AfterViewInit {
+export class CourseDialogComponent {
   form: FormGroup;
   course: Course;
 
@@ -42,12 +35,11 @@ export class CourseDialogComponent implements AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {}
-
   save() {
     const changes = this.form.value;
-    this.coursesService
-      .saveCourse(this.course.id, changes)
+    const saveCourse$ = this.coursesService.saveCourse(this.course.id, changes);
+    this.loadingService
+      .showLoaderUntilCompleted(saveCourse$)
       .subscribe((val) => this.dialogRef.close(val));
   }
 
