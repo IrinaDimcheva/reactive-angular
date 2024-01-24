@@ -25,10 +25,19 @@ import { CoursesService } from '../services/courses.service';
 })
 export class SearchLessonsComponent {
   searchResults$: Observable<Lesson[]>;
+  activeLesson: Lesson;
 
   constructor(private coursesService: CoursesService) {}
 
   onSearch(search: string) {
     this.searchResults$ = this.coursesService.searchLessons(search);
+  }
+
+  openLesson(lesson: Lesson) {
+    this.activeLesson = lesson;
+  }
+
+  goBackToSearch() {
+    this.activeLesson = null;
   }
 }
